@@ -44,6 +44,7 @@ const MerchandiseDetail = () => {
   };
 
   const mockArtist = {
+    id: "1997",
     name: "Jack",
     img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZ8D6I_OM3e_cbZ5zhovzOMAm8BZxlsxxVsw&s ",
   };
@@ -86,16 +87,16 @@ const MerchandiseDetail = () => {
     });
     alert("Added to cart!");
   };
-   
+
   const handleBuyNow = () => {
     const orderData = {
       selectedProducts: [{ ...product, quantity: count }],
-      total: count * product.price
+      total: count * product.price,
     };
     navigate("/shop/checkout", { state: orderData });
   };
-  const handleShop = () => {
-    navigate("/shop");
+  const handleShop = (id) => {
+    navigate(`/shop/artist/${id}`);
   };
 
   if (!product) {
@@ -103,7 +104,9 @@ const MerchandiseDetail = () => {
   }
 
   return (
-    <Box sx={{ width: "100%", backgroundColor: "#f5f5f5",paddingBottom: "5vh", }}>
+    <Box
+      sx={{ width: "100%", backgroundColor: "#f5f5f5", paddingBottom: "5vh" }}
+    >
       <Box
         sx={{
           display: "flex",
@@ -442,7 +445,7 @@ const MerchandiseDetail = () => {
               sx={{
                 marginTop: {
                   md: "0",
-                  xs: "8vw"
+                  xs: "8vw",
                 },
                 display: "flex",
                 alignItems: "center",
@@ -463,7 +466,7 @@ const MerchandiseDetail = () => {
                   padding: {
                     md: "0",
                     sm: "3vw",
-                    xs: "4vw"
+                    xs: "4vw",
                   },
                   backgroundColor: "#e6d8d9",
                   minWidth: "0",
@@ -550,7 +553,7 @@ const MerchandiseDetail = () => {
           backgroundColor: "white",
           width: "90%",
           margin: "2% 5% -1% 5%",
-          paddingBottom:{xs: "5%"},
+          paddingBottom: { xs: "5%" },
           display: "flex",
         }}
       >
@@ -564,7 +567,7 @@ const MerchandiseDetail = () => {
           }}
         >
           <Box
-             component="img"
+            component="img"
             src={artist.img}
             sx={{
               maxWidth: "100%",
@@ -574,11 +577,11 @@ const MerchandiseDetail = () => {
               border: "0.1vw gray solid",
               width: {
                 md: "7vw",
-                xs: "13vw"
+                xs: "13vw",
               },
               height: {
                 md: "7vw",
-                xs: "13vw"
+                xs: "13vw",
               },
               marginLeft: "2vw",
               marginTop: "2vw",
@@ -586,11 +589,15 @@ const MerchandiseDetail = () => {
           />
         </Link>
         <Box sx={{ margin: "2vw 2vw 0vw 2vw", color: "black" }}>
-          <Typography sx={{ fontSize: {
-            md: "2vw",
-            sm: "3vw",
-            xs: "4vw"
-          } }}>
+          <Typography
+            sx={{
+              fontSize: {
+                md: "2vw",
+                sm: "3vw",
+                xs: "4vw",
+              },
+            }}
+          >
             {artist.name}'s Store
           </Typography>
           <Button
@@ -599,12 +606,12 @@ const MerchandiseDetail = () => {
               width: {
                 md: "12vw",
                 sm: "16vw",
-                xs: "20vw"
+                xs: "20vw",
               },
               minWidth: "0",
               height: {
                 md: "2.5vw",
-                xs: "5vw"
+                xs: "5vw",
               },
               border: "0.12vw gray solid",
               marginTop: "2vw",
@@ -623,28 +630,32 @@ const MerchandiseDetail = () => {
                 opacity: 1,
               },
             }}
-            onClick={handleShop}
+            onClick={() => handleShop(artist.id)}
           >
             <RemoveRedEyeIcon
               sx={{
                 marginRight: "0.75vw",
                 width: {
-                  md:"1.5vw",
-                  xs:"3vw"
+                  md: "1.5vw",
+                  xs: "3vw",
                 },
                 height: {
                   md: "1.5vw",
-                  xs: "3vw"
+                  xs: "3vw",
                 },
                 color: "black",
               }}
             />{" "}
             <Typography
-              sx={{ fontWeight: "medium", fontSize: {
-                md: "1vw",
-                sm: "1.5vw",
-                xs: "2vw"
-              }, color: "black" }}
+              sx={{
+                fontWeight: "medium",
+                fontSize: {
+                  md: "1vw",
+                  sm: "1.5vw",
+                  xs: "2vw",
+                },
+                color: "black",
+              }}
             >
               {" "}
               VIEW SHOP{" "}
