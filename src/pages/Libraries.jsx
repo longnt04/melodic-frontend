@@ -1,6 +1,7 @@
 import React from "react";
 import Container from "../components/common/Container";
 import CardGrid from "../components/common/CardGrid";
+import CollectionCard from "../components/common/CollectionCard";
 
 const Libraries = ({ type }) => {
   const data = {
@@ -113,7 +114,7 @@ const Libraries = ({ type }) => {
   return (
     selectedData && (
       <Container header={selectedData.header}>
-        <CardGrid List={selectedData.items} type={type} />
+        <CollectionCard List={selectedData.items} type={type} />
       </Container>
     )
   );

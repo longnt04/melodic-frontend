@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import AlbumCard from "./AlbumCard.jsx";
+import CollectionCard from "./CollectionCard.jsx";
 import MerchandiseCard from "./MerchandiseCard.jsx";
 import ArtistCard from "./ArtistCard.jsx";
 import { Box } from "@mui/material";
 import "swiper/swiper-bundle.css";
 
-const AlbumSlider = ({ list, type }) => {
+const Slider = ({ list, type }) => {
   const [slidesConfig, setSlidesConfig] = useState({
     slidesPerView: 7,
     slidesPerGroup: 7,
@@ -55,7 +55,7 @@ const AlbumSlider = ({ list, type }) => {
           list.map((item) => (
             <SwiperSlide key={item.id}>
               {type === "Album" ? (
-                <AlbumCard album={item} />
+                <CollectionCard collection={item} type={"Album"}/>
               ) : type === "Artist" ? (
                 <ArtistCard artist={item} />
               ) : (
@@ -68,4 +68,4 @@ const AlbumSlider = ({ list, type }) => {
   );
 };
 
-export default AlbumSlider;
+export default Slider;
