@@ -8,11 +8,11 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import StorefrontRoundedIcon from "@mui/icons-material/Storefront";
 import MusicVideoIcon from "@mui/icons-material/MusicVideo";
-import { MusicNote } from "@mui/icons-material";
 
 function TopBar() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = React.useState("");
+  const [isSticky, setIsSticky] = React.useState(false);
 
   const handleSearch = () => {
     if (searchTerm.trim()) {
@@ -21,20 +21,43 @@ function TopBar() {
   };
 
   const handleBackClick = () => {
-    navigate(-1); // Navigate back to the previous page
+    navigate(-1);
   };
+
   const handleToCart = () => {
     navigate("/shop/cart");
   };
+
   const handleToShop = () => {
     navigate("/shop");
   };
+
   const handToHome = () => {
     navigate("/");
   };
+
   const handleToOrderHistory = () => {
     navigate("/shop/order-history");
   };
+
+  // Lắng nghe sự kiện cuộn
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const scrollThreshold = 85; 
+      if (window.scrollY > scrollThreshold) {
+        setIsSticky(true);
+      } else {
+        setIsSticky(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <Box
       sx={{
@@ -44,13 +67,20 @@ function TopBar() {
         color: "black",
         padding: "1em",
         borderBottom: "0.1vw gray solid",
+        position: isSticky ? "sticky" : "relative", // Chỉ sticky khi vượt ngưỡng
+        top: isSticky ? 0 : "unset",
+        zIndex: isSticky ? 1000 : "auto",
+        transition: "0.3s ease-in-out", // Hiệu ứng mượt
       }}
     >
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-evenly",
-          width: "60%",
+          width: {
+            xs: "50%",
+            md: "60%",
+          },
         }}
       >
         <IconButton sx={{ color: "black" }} onClick={handleBackClick}>
@@ -62,7 +92,7 @@ function TopBar() {
           placeholder="Search"
           size="small"
           sx={{
-            width: "50vw",
+            width: "90%",
             backgroundColor: "#f0f0f0",
             borderRadius: "6px",
             "& .MuiOutlinedInput-root": {
@@ -168,9 +198,7 @@ function TopBar() {
             }}
           />
         </IconButton>
-        <IconButton
-          sx={{ color: "#000000", display: { xs: "none", sm: "flex" } }}
-        >
+        <IconButton sx={{ color: "#000000", display: "flex" }}>
           <AccountCircleIcon
             sx={{
               width: {
