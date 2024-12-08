@@ -14,14 +14,16 @@ const OrderHistory = () => {
           id: 1,
           price: 25,
           quantity: 2,
-          image: "https://shop.thenbhd.com/cdn/shop/products/NBHD-SCULPTURE-TEE_600x.png?v=1681766714",
+          image:
+            "https://shop.thenbhd.com/cdn/shop/products/NBHD-SCULPTURE-TEE_600x.png?v=1681766714",
         },
         {
           name: "Quần jeans nữ",
           id: 2,
           price: 30,
           quantity: 1,
-          image: "https://shop.thenbhd.com/cdn/shop/files/NBHD-HOUSE-TEE_600x.png?v=1694035989",
+          image:
+            "https://shop.thenbhd.com/cdn/shop/files/NBHD-HOUSE-TEE_600x.png?v=1694035989",
         },
       ],
       status: "Cancelled",
@@ -34,7 +36,8 @@ const OrderHistory = () => {
           id: 2,
           price: 50,
           quantity: 1,
-          image: "https://shop.thenbhd.com/cdn/shop/products/HOLLYWOODHOODIE_600x.png?v=1634018637",
+          image:
+            "https://shop.thenbhd.com/cdn/shop/products/HOLLYWOODHOODIE_600x.png?v=1634018637",
         },
       ],
       status: "Completed",
@@ -46,13 +49,15 @@ const OrderHistory = () => {
           name: "Áo thun nam",
           price: 25,
           quantity: 3,
-          image: "https://shop.thenbhd.com/cdn/shop/products/NBHD-SCULPTURE-TEE_600x.png?v=1681766714",
+          image:
+            "https://shop.thenbhd.com/cdn/shop/products/NBHD-SCULPTURE-TEE_600x.png?v=1681766714",
         },
         {
           name: "Quần jeans nữ",
           price: 30,
           quantity: 1,
-          image: "https://shop.thenbhd.com/cdn/shop/files/NBHD-HOUSE-TEE_600x.png?v=1694035989",
+          image:
+            "https://shop.thenbhd.com/cdn/shop/files/NBHD-HOUSE-TEE_600x.png?v=1694035989",
         },
       ],
       status: "To Receive",
@@ -61,7 +66,7 @@ const OrderHistory = () => {
 
   // Trạng thái lọc
   const [filterStatus, setFilterStatus] = useState("All");
-  
+
   // Điều hướng
   const navigate = useNavigate();
 
@@ -69,7 +74,17 @@ const OrderHistory = () => {
   const handleTabChange = (event, newValue) => {
     setFilterStatus(newValue);
   };
-
+  const handleToDetail = (order) => {
+    const orderData = {
+      selectedProducts: order.merchandises,
+      total: order.merchandises.reduce(
+        (total, merchandise) =>
+          total + merchandise.price * merchandise.quantity,
+        0
+      ),
+    };
+    //navigate(`/shop/order/${order.id}`, { state: orderData});
+  };
   // Lọc dữ liệu theo trạng thái
   const filteredOrders =
     filterStatus === "All"
@@ -214,53 +229,59 @@ const OrderHistory = () => {
               0
             ); // Tính tổng giá trị đơn hàng
             return (
-              <Box
+              <Link
                 key={order.id}
-                sx={{
-                  backgroundColor: "white",
-                  padding: "1vw",
-                  marginBottom: "1vw",
-                  borderRadius: "6px",
-                }}
+                to={`/shop/order/${order.id}`}
+                state={{ orderData: order, total: orderTotal }}
+                style={{ textDecoration: "none", color: "inherit" }}
               >
-                <Typography
+                <Box
                   sx={{
-                    fontSize: { xs: "2.7vw", sm: "2vw", md: "1.3vw" },
+                    backgroundColor: "white",
+                    padding: "1vw",
                     marginBottom: "1vw",
-                    position: "absolute",
-                    right: 20,
-                    textTransform: "uppercase",
-                    color: "#e75565",
+                    borderRadius: "6px",
                   }}
+                  onClick={() => handleToDetail(order)}
                 >
-                  {order.status}
-                </Typography>
-
-                {/* Danh sách sản phẩm trong đơn hàng */}
-                {order.merchandises.map((merchandise, index) => (
-                  <Link
-                    key={index}
-                    to={`/shop/merchandise/${merchandise.id}`}
-                    style={{ textDecoration: "none", color: "inherit" }}
+                  <Typography
+                    sx={{
+                      fontSize: { xs: "2.7vw", sm: "2vw", md: "1.3vw" },
+                      marginBottom: "1vw",
+                      position: "absolute",
+                      right: 20,
+                      textTransform: "uppercase",
+                      color: "#e75565",
+                    }}
                   >
+                    {order.status}
+                  </Typography>
+                  {/* Danh sách sản phẩm trong đơn hàng */}
+                  {order.merchandises.map((merchandise, index) => (
                     <Box
+                      key={index}
                       sx={{
                         display: "flex",
                         alignItems: "center",
                         marginBottom: "1vw",
                       }}
                     >
-                      <img
-                        src={merchandise.image}
-                        alt={merchandise.name}
-                        style={{
-                          width: "100px",
-                          height: "100px",
-                          objectFit: "cover",
-                          marginRight: "1vw",
-                          borderRadius: "6px",
-                        }}
-                      />
+                      <Link
+                        to={`/shop/merchandise/${merchandise.id}`}
+                        style={{ textDecoration: "none", color: "inherit" }}
+                      >
+                        <img
+                          src={merchandise.image}
+                          alt={merchandise.name}
+                          style={{
+                            width: "100px",
+                            height: "100px",
+                            objectFit: "cover",
+                            marginRight: "1vw",
+                            borderRadius: "6px",
+                          }}
+                        />
+                      </Link>
                       <Box>
                         <Typography
                           sx={{
@@ -285,41 +306,39 @@ const OrderHistory = () => {
                         </Typography>
                       </Box>
                     </Box>
-                  </Link>
-                ))}
-
-                <Divider sx={{ margin: "1vw 0" }} />
-
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    alignContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography
+                  ))}
+                  <Divider sx={{ margin: "1vw 0" }} />
+                  <Box
                     sx={{
-                      fontSize: { xs: "3vw", sm: "2vw", md: "1.2vw" },
-                      color: "#000",
-                      marginRight: "3vw",
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignContent: "center",
+                      alignItems: "center",
                     }}
                   >
-                    Order Total: {orderTotal} $
-                  </Typography>
-                  <Button
-                    onClick={() => handleBuyAgain(order)}  // Sử dụng hàm xử lý
-                    sx={{
-                      backgroundColor: "#d0011b",
-                      color: "white",
-                      fontSize: { xs: "3vw", sm: "2vw", md: "1vw" },
-                      "&:hover": { backgroundColor: "rgba(208,1,27, 0.9)" },
-                    }}
-                  >
-                    Buy Again
-                  </Button>
+                    <Typography
+                      sx={{
+                        fontSize: { xs: "3vw", sm: "2vw", md: "1.2vw" },
+                        color: "#000",
+                        marginRight: "3vw",
+                      }}
+                    >
+                      Order Total: {orderTotal} $
+                    </Typography>
+                    <Button
+                      onClick={() => handleBuyAgain(order)} // Sử dụng hàm xử lý
+                      sx={{
+                        backgroundColor: "#d0011b",
+                        color: "white",
+                        fontSize: { xs: "3vw", sm: "2vw", md: "1vw" },
+                        "&:hover": { backgroundColor: "rgba(208,1,27, 0.9)" },
+                      }}
+                    >
+                      Buy Again
+                    </Button>
+                  </Box>
                 </Box>
-              </Box>
+              </Link>
             );
           })}
         </Box>

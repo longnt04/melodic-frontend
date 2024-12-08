@@ -31,11 +31,13 @@ import CheckOutPage from "./pages/CheckOutPage";
 import ShopLayout from "./components/layout/ShopLayout";
 import MultiSearch from "./pages/MultiSearchPage";
 import AllGenre from "./pages/AllGenre";
-
+import ScrollToTop from "./components/common/ScrollToTop";
 // import Dashboard from './components/Artist/DashBoard';
 
 import { useEffect } from "react";
 import { clearToken } from "./redux/store";
+import ArtistShop from "./pages/ArtistShop";
+import OrderDetail from "./pages/OrderDetail";
 function App() {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
@@ -47,6 +49,7 @@ function App() {
   // console.log(token);
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes className="App">
         {/* <Route path="/" element={token ? <MainLayout /> : <Navigate to="/login"/> }> */}
         <Route path="/" element={<MainLayout />}>
@@ -60,11 +63,11 @@ function App() {
           <Route path="artist/:id/profile" element={<ArtistProfile />} />
           <Route path="album/:id" element={<Album />} />
           <Route path="genre" element={<AllGenre />} />
+          <Route path="multi-search" element={<MultiSearch />} />
         </Route>
         <Route path="/artist" element={<ArtistDashboard />}>
           {/* <Route index element={<Dashboard/>} />  */}
           {/* <Route path="dashboard" element={<Dashboard/>} /> */}
-          <Route path="multi-search" element={<MultiSearch />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />{" "}
@@ -102,8 +105,10 @@ function App() {
           <Route index element={<ShopPage />} />
           <Route path="merchandise/:id" element={<MerchandiseDetail />} />
           <Route path="merch-search" element={<MerchSearch />} />
+          <Route path="artist/:id" element={<ArtistShop />} />
           <Route path="cart" element={<CartPage />} />
           <Route path="order-history" element={<OrderHistory />} />
+          <Route path="order/:id" element={<OrderDetail />} />
           <Route path="checkout" element={<CheckOutPage />} />
         </Route>
       </Routes>
