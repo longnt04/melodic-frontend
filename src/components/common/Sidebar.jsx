@@ -22,11 +22,10 @@ import StorefrontIcon from "@mui/icons-material/Storefront";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "react-router-dom";
 
-
-const Sidebar = ({open = false, toggleSidebar}) => {
+const Sidebar = ({ open = false, toggleSidebar }) => {
   const [selectedItem, setSelectedItem] = useState("Home"); // State for active item
   const navigate = useNavigate();
-
+  const [searchQuery, setSearchQuery] = useState("");
   // const handleDrawerToggle = () => {
   //   setMobileOpen(!mobileOpen);
   // };
@@ -35,7 +34,11 @@ const Sidebar = ({open = false, toggleSidebar}) => {
     setSelectedItem(text); // Update active item
   };
 
-
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      navigate(`/multi-search?q=${encodeURIComponent(searchQuery)}`);
+    }
+  };
   const items = [
     { text: "Home", icon: <HomeIcon />, section: null },
     { text: "New", icon: <NewIcon />, section: null },
@@ -88,13 +91,21 @@ const Sidebar = ({open = false, toggleSidebar}) => {
           marginBottom: "1rem",
         }}
       >
-        <SearchIcon sx={{ color: "gray", marginRight: "8px" }} />
+        <SearchIcon
+          sx={{ color: "gray", marginRight: "8px" }}
+          onClick={handleSearch}
+        />
         <InputBase
           placeholder="Search"
           fullWidth
           sx={{
             color: "white",
             fontSize: "14px",
+          }}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleSearch();
           }}
           onFocus={() => navigate("/genre")} // Redirect to AllGenre page on focus
         />
@@ -104,9 +115,9 @@ const Sidebar = ({open = false, toggleSidebar}) => {
       <List>
         {items.map((item, index) => (
           <React.Fragment key={index}>
-            {index === 0 || items[index - 1].section !== item.section ? (
-              item.section && <Divider label={item.section} />
-            ) : null}
+            {index === 0 || items[index - 1].section !== item.section
+              ? item.section && <Divider label={item.section} />
+              : null}
             <Link
               to={item.text === "Home" ? "/" : `/${item.text.toLowerCase()}`}
               style={{ textDecoration: "none", color: "inherit" }}
@@ -122,8 +133,7 @@ const Sidebar = ({open = false, toggleSidebar}) => {
                   },
                 }}
               >
-                <ListItemIcon sx={{ color: iconColor }}
-                >
+                <ListItemIcon sx={{ color: iconColor }}>
                   {item.icon}
                 </ListItemIcon>
                 <ListItemText
@@ -147,7 +157,6 @@ const Sidebar = ({open = false, toggleSidebar}) => {
 
   return (
     <Box sx={{ display: "flex" }}>
-      
       {/* Mobile Drawer */}
       <Drawer
         variant="temporary"
@@ -174,7 +183,10 @@ const Sidebar = ({open = false, toggleSidebar}) => {
         variant="permanent"
         sx={{
           display: { xs: "none", sm: "none", md: "block" },
-          "& .MuiDrawer-paper": { width: drawerWidth, backgroundColor: "#1f1f1f" },
+          "& .MuiDrawer-paper": {
+            width: drawerWidth,
+            backgroundColor: "#1f1f1f",
+          },
         }}
         open
       >
